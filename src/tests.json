@@ -1,0 +1,25 @@
+{
+  "url":
+    "https://www.facebook.com/BoCobot-Dev-529334300818600/?modal=admin_todo_tour",
+  "tests": [
+    {
+      "ask": "hello",
+      "answer": [
+        "Hi Demo, I'm BoCobot from Bouygues Construction. What can I help you with ?"
+      ]
+    },
+    {
+      "ask": "hello again",
+      "answer": [
+        "Hi Demo, I'm BoCobot from Bouygues Construction. What can I help you with ?"
+      ]
+    },
+    {
+      "ask": "hello again again",
+      "answer": [
+        "Sorry, BoCobot can't find the answer to your question. Please say 'Help' to see what I can help",
+        "Is there anything else I can help?"
+      ]
+    }
+  ]
+}
