@@ -96,7 +96,7 @@ const main = async () => {
 
   for (let test of testCases) {
     await handleTest(page, test);
-    await page.waitFor(2000);
+    await page.waitFor(500);
   }
 
   await saveTestResult(testCases);
