@@ -10,6 +10,8 @@
 * Add test_cases.csv file to `__test__` folder: `__test__/test_cases.csv`
   * Fields: [`order`,`input`,`output`]
 
+  ![](./docs/images/test_cases_csv.png)  
+  
 ## Test
 
 * `yarn test`
