@@ -1,8 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "test": "jest",
-    "loginFacebook": "node src/index.js"
+    "test": "node src/index.js"
   },
   "devDependencies": {
     "chalk": "^2.3.0",
