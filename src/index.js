@@ -7,23 +7,38 @@ const {
 const tests = require('./tests.json');
 
 const main = async () => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    // slowMo: 400,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-notifications',
-    ],
-  });
+  let browser;
+  let page;
 
-  let page = await browser.newPage();
-  await page.setViewport({
-    width: 1000,
-    height: 700,
-  });
+  const setup = async () => {
+    console.log('Start');
+    browser = await puppeteer.launch({
+      headless: false,
+      // slowMo: 400,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-notifications',
+      ],
+    });
+    page = await browser.newPage();
+    await page.setViewport({
+      width: 1000,
+      height: 700,
+    });
+  };
+
+  const teardown = async () => {
+    console.log('Done');
+
+    await page.close();
+    await browser.close();
+  };
+
+  await setup();
 
   await loginFacebook(page);
+
   await page.goto(tests.url);
 
   for (let test of tests.tests) {
@@ -33,7 +48,7 @@ const main = async () => {
     await page.waitFor(2000);
   }
 
-  console.log('Done.');
+  await teardown();
 };
 
 main();
