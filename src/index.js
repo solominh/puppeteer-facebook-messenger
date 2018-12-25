@@ -85,8 +85,7 @@ const main = async () => {
     for (let reply of outputArr) {
       if (reply !== textMessages[index]) {
         isPassed = false;
-        test['error_message'] += `Output ${index +
-          1} not matched!\nExpect: ${reply}\nBot reply: ${
+        test['error_message'] += `${index + 1}. Bot reply: ${
           textMessages[index]
         }\n`;
       }
