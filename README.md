@@ -14,7 +14,7 @@
 
 * `yarn test`
 
-## How to get some Facebook messenger selector (subject to change in the future)
+## How to get some Facebook messenger selectors (subject to change in the future)
 
 ```JavaScript
 const selectors = {

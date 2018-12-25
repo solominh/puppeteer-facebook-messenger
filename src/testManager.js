@@ -2,6 +2,21 @@ const path = require('path');
 const csv = require('csvtojson');
 const json2csv = require('json2csv').parse;
 const fs = require('fs-extra');
+const XRegExp = require('xregexp');
+
+// Simple and work fine. But using library will work for all cases
+// const parseOutput=(str)=>{
+//     let arr = output.match(/^\[.*\]$/gm);
+//     arr = arr
+//       .map(str => str.substring(1, str.length - 1))
+//       .map(str => str.trim());
+//     return arr;
+// }
+
+// Use library
+const parseOutput = str => {
+  return XRegExp.matchRecursive(str, '\\[', '\\]', 'g');
+};
 
 const fetchTestCases = async () => {
   const csvFilePath = path.join(__dirname, '../__test__/test_cases.csv');
@@ -14,17 +29,9 @@ const fetchTestCases = async () => {
     input = input.trim();
     output = output.trim();
 
-    let arr = [output];
-    if (output.startsWith('[')) {
-      arr = output.match(/^\[.*\]$/gm);
-      arr = arr
-        .map(str => str.substring(1, str.length - 1))
-        .map(str => str.trim());
-    }
-    test.outputArr = arr;
+    test.outputArr = output.startsWith('[') ? parseOutput(output) : [output];
     test['error_message'] = '';
     test['test_result'] = '';
-    console.log(arr.length, arr);
   });
 
   return jsonArray;
