@@ -62,6 +62,7 @@ const getBotReplyTextMessages = async page => {
 };
 
 module.exports = {
+  openChatWindow,
   sendMessage,
   getBotReplyTextMessages,
 };

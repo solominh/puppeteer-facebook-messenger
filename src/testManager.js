@@ -22,6 +22,8 @@ const fetchTestCases = async () => {
         .map(str => str.trim());
     }
     test.outputArr = arr;
+    test['error_message'] = '';
+    test['test_result'] = '';
     console.log(arr.length, arr);
   });
 

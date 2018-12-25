@@ -2,21 +2,22 @@ require('dotenv').config();
 const puppeteer = require('puppeteer');
 const { loginFacebook } = require('./loginFacebook');
 const {
+  openChatWindow,
   sendMessage,
   getBotReplyTextMessages,
 } = require('./facebookMessengerParser');
+const settings = require('./settings.json');
 
 const { fetchTestCases, saveTestResult } = require('./testManager');
 
 const main = async () => {
   let browser;
   let page;
-  const { TEST_URL } = process.env;
 
   const setup = async () => {
     console.log('Start');
     browser = await puppeteer.launch({
-      headless: false,
+      headless: settings.headless,
       // slowMo: 400,
       args: [
         '--no-sandbox',
@@ -48,7 +49,9 @@ const main = async () => {
     throw error;
   }
 
-  await page.goto(TEST_URL);
+  await page.goto(settings.url);
+  await openChatWindow(page);
+  await page.waitFor(2000);
 
   let testCases;
   try {
@@ -96,7 +99,7 @@ const main = async () => {
 
   for (let test of testCases) {
     await handleTest(page, test);
-    await page.waitFor(500);
+    // await page.waitFor(500);
   }
 
   await saveTestResult(testCases);
