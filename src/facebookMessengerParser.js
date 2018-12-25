@@ -12,9 +12,7 @@ const selectors = {
 };
 
 const openChatWindow = async page => {
-  const sendMessageButton = await page.$(
-    selectors.sendMessageButtonSelector
-  );
+  const sendMessageButton = await page.$(selectors.sendMessageButtonSelector);
   await sendMessageButton.click();
   await page.waitForSelector(selectors.allMessagesSelector);
 };
@@ -55,7 +53,7 @@ const getBotReplyTextMessages = async page => {
 
     await botMessageElementHandle.dispose();
 
-    return textMessages;
+    return textMessages.map(m => m.trim()).filter(m => m);
   }
 };
 

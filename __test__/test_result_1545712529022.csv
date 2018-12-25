@@ -1,0 +1,12 @@
+"order","input","output","test_result","error_message"
+"1","hello","Hi Demo, I'm BoCobot from Bouygues Construction. What can I help you with ?","Passed",""
+"2","hello again","Hi Demo, I'm BoCobot from Bouygues Construction. What can I help you with ?","Passed",""
+"3","hello again again","[Sorry, BoCobot can't find the answer to your question. Please say 'Help' to see what I can help]
+[Is there anything else I can help?]
+[WHat is this?]","Failed","Output 2 not matched!
+Expect: Is there anything else I can help?
+Bot reply: undefined
+Output 3 not matched!
+Expect: WHat is this?
+Bot reply: undefined
+"
