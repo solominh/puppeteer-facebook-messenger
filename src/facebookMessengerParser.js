@@ -9,7 +9,8 @@ const selectors = {
     '.fbNubFlyoutOuter  .fbNubFlyoutInner  ._1i6a  ._4po5  ._4po8  ._4po9  div._4tdt:last-child',
   textMessagesSelector: '._4gx_ ._1aa6 ._5yl5',
   sendMessageButtonSelector: "._4bl9 button[type='submit']",
-  quickReplyButtonsSelector: "._419m ._2zgz div[role='button'] ._10-c",
+  quickReplyButtonsSelector:
+    ".fbNubFlyoutOuter  .fbNubFlyoutInner  ._1i6a  ._4po5  ._4po8  ._4po9 ._419m ._2zgz div[role='button'] ._10-c",
   menuButtonsSelector: '._3cn0 ._4id8 ._3cnr div a',
   slideItemsSelector: '._2dyr ._2zgz',
 };
@@ -65,13 +66,15 @@ const getBotMessages = async page => {
     );
     textMessages = textMessages.map(m => m.trim()).filter(m => m);
 
-    const quickReplyButtonsHandle = await botMessageHandle.$$(
+    const botMessageElHandle = await botMessageHandle.asElement();
+    // Note: quickReplyButtons is outside of botMessages container
+    const quickReplyButtons = await page.$$(
       selectors.quickReplyButtonsSelector
     );
-    const menuButtonsHandle = await botMessageHandle.$$(
+    const menuButtons = await botMessageElHandle.$$(
       selectors.menuButtonsSelector
     );
-    const slideItemsHandle = await botMessageHandle.$$(
+    const slideItems = await botMessageElHandle.$$(
       selectors.slideItemsSelector
     );
 
@@ -79,9 +82,9 @@ const getBotMessages = async page => {
 
     return {
       textMessages,
-      quickReplyButtonsHandle,
-      menuButtonsHandle,
-      slideItemsHandle,
+      quickReplyButtons,
+      menuButtons,
+      slideItems,
     };
   }
 };

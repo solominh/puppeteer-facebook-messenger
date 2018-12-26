@@ -42,7 +42,11 @@ const handleTest = () => {
     return testCases;
   };
 
-  const handleTest = async (page, test) => {
+  const isTextInput = text => {
+    return !text.startsWith('[');
+  };
+
+  handleTextInput = async (page, test) => {
     try {
       await sendMessage(page, test.input);
     } catch (error) {
@@ -62,12 +66,7 @@ const handleTest = () => {
       throw error;
     }
 
-    const {
-      textMessages,
-      quickReplyButtonsHandle,
-      menuButtonsHandle,
-      slideItemsHandle,
-    } = messages;
+    const { textMessages } = messages;
 
     const compareTextMessages = (test, textMessages) => {
       let index = 0;
@@ -86,6 +85,48 @@ const handleTest = () => {
     };
 
     compareTextMessages(test, textMessages);
+  };
+
+  handleActionInput = async (page, test) => {
+    let messages;
+    try {
+      messages = await getBotMessages(page);
+    } catch (error) {
+      console.log(error);
+      console.log('FAILED TO RECEIVE MESSAGE');
+      test['error_message'] = `FAILED TO RECEIVE MESSAGE: ${error.message}`;
+      throw error;
+    }
+
+    const actionInput = test.input.substring(1, test.input.length - 1);
+
+    const {
+      textMessages,
+      quickReplyButtons,
+      menuButtons,
+      slideItems,
+    } = messages;
+
+    if (quickReplyButtons) {
+      for (let quickReplyButton of quickReplyButtons) {
+        const buttonName = await page.evaluate(
+          el => el.textContent,
+          quickReplyButton
+        );
+        if (buttonName.includes(actionInput)) {
+          quickReplyButton.asElement().click();
+          break;
+        }
+      }
+    }
+  };
+
+  const handleTest = async (page, test) => {
+    if (isTextInput(test.input)) {
+      await handleTextInput(page, test);
+    } else {
+      await handleActionInput(page, test);
+    }
   };
 
   return {
