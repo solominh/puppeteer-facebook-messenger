@@ -46,16 +46,7 @@ const handleTest = () => {
     return !text.startsWith('[');
   };
 
-  handleTextInput = async (page, test) => {
-    try {
-      await sendMessage(page, test.input);
-    } catch (error) {
-      console.log(error);
-      console.log('FAILED TO SEND MESSAGE');
-      test['error_message'] = `FAILED TO SEND MESSAGE: ${error.message}`;
-      throw error;
-    }
-
+  compareBotMessageWithTestOutput = async (page, test) => {
     let messages;
     try {
       messages = await getBotMessages(page);
@@ -85,6 +76,19 @@ const handleTest = () => {
     };
 
     compareTextMessages(test, textMessages);
+  };
+
+  handleTextInput = async (page, test) => {
+    try {
+      await sendMessage(page, test.input);
+    } catch (error) {
+      console.log(error);
+      console.log('FAILED TO SEND MESSAGE');
+      test['error_message'] = `FAILED TO SEND MESSAGE: ${error.message}`;
+      throw error;
+    }
+
+    await compareBotMessageWithTestOutput(page, test);
   };
 
   handleActionInput = async (page, test) => {
@@ -119,6 +123,8 @@ const handleTest = () => {
         }
       }
     }
+
+    await compareBotMessageWithTestOutput(page, test);
   };
 
   const handleTest = async (page, test) => {
