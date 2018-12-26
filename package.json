@@ -11,6 +11,7 @@
     "fs-extra": "^7.0.1",
     "jest": "^23.6.0",
     "json2csv": "^4.3.2",
+    "moment": "^2.23.0",
     "prettier": "^1.9.2",
     "puppeteer": "^1.11.0",
     "rimraf": "^2.6.2",

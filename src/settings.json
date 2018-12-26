@@ -1,5 +1,9 @@
 {
   "url":
     "https://www.facebook.com/BoCobot-Dev-529334300818600/?modal=admin_todo_tour",
-  "headless": false
+  "headless": false,
+  "scenarioFileNames": [
+    "test_cases.csv",
+    "test_cases2.csv"
+  ]
 }

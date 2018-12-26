@@ -7,8 +7,7 @@ const {
   getBotReplyTextMessages,
 } = require('./facebookMessengerParser');
 const settings = require('./settings.json');
-
-const { fetchTestCases, saveTestResult } = require('./testManager');
+const handleTest = require('./handleTest');
 
 const main = async () => {
   let browser;
@@ -53,56 +52,7 @@ const main = async () => {
   await openChatWindow(page);
   await page.waitFor(2000);
 
-  let testCases;
-  try {
-    testCases = await fetchTestCases();
-  } catch (error) {
-    console.log(error);
-    console.log('FAILED TO READ TEST CASES');
-    throw error;
-  }
-
-  const handleTest = async (page, test) => {
-    try {
-      await sendMessage(page, test.input);
-    } catch (error) {
-      console.log(error);
-      console.log('FAILED TO SEND MESSAGE');
-      test['error_message'] = `FAILED TO SEND MESSAGE: ${error.message}`;
-      throw error;
-    }
-
-    let textMessages;
-    try {
-      textMessages = await getBotReplyTextMessages(page);
-    } catch (error) {
-      console.log(error);
-      console.log('FAILED TO RECEIVE MESSAGE');
-      test['error_message'] = `FAILED TO RECEIVE MESSAGE: ${error.message}`;
-      throw error;
-    }
-
-    let index = 0;
-    let isPassed = true;
-    const { outputArr } = test;
-    for (let reply of outputArr) {
-      if (reply !== textMessages[index]) {
-        isPassed = false;
-        test['error_message'] += `${index + 1}. Bot reply: ${
-          textMessages[index]
-        }\n`;
-      }
-      index++;
-    }
-    test['test_result'] = isPassed ? 'Passed' : 'Failed';
-  };
-
-  for (let test of testCases) {
-    await handleTest(page, test);
-    // await page.waitFor(500);
-  }
-
-  await saveTestResult(testCases);
+  await handleTest.handleScenarios(page);
 
   await teardown();
 };

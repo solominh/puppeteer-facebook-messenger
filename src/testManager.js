@@ -3,6 +3,8 @@ const csv = require('csvtojson');
 const json2csv = require('json2csv').parse;
 const fs = require('fs-extra');
 const XRegExp = require('xregexp');
+const settings = require('./settings.json');
+const moment = require('moment');
 
 // Simple and work fine. But using library will work for all cases
 // const parseOutput=(str)=>{
@@ -12,14 +14,23 @@ const XRegExp = require('xregexp');
 //       .map(str => str.trim());
 //     return arr;
 // }
-
 // Use library
 const parseOutput = str => {
   return XRegExp.matchRecursive(str, '\\[', '\\]', 'g');
 };
 
-const fetchTestCases = async () => {
-  const csvFilePath = path.join(__dirname, '../__test__/test_cases.csv');
+const fetchScenarioFilePaths = async () => {
+  const scenarioPath = path.join(__dirname, '../scenarios');
+
+  console.log(scenarioPath);
+  const { scenarioFileNames } = settings;
+  return scenarioFileNames
+    .map(p => path.join(scenarioPath, p))
+    .filter(p => fs.existsSync(p));
+};
+
+const fetchTestCases = async scenarioFilePath => {
+  const csvFilePath = path.join(scenarioFilePath);
   const jsonArray = await csv().fromFile(csvFilePath);
   console.log(jsonArray);
 
@@ -37,17 +48,16 @@ const fetchTestCases = async () => {
   return jsonArray;
 };
 
-const saveTestResult = async testCases => {
-  const testResultPath = path.join(
-    __dirname,
-    `../__test__/test_result_${Date.now()}.csv`
-  );
+const saveTestResult = async (resultDirname, scenarioFilePath, testCases) => {
+  const resultPath = path.join(__dirname, '../scenarios_results');
+  const scenarioFileName = path.basename(scenarioFilePath);
+  const resultFilePath = path.join(resultPath, resultDirname, scenarioFileName);
 
   try {
     const fields = ['order', 'input', 'output', 'test_result', 'error_message'];
     const opts = { fields };
     const csv = json2csv(testCases, opts);
-    await fs.outputFile(testResultPath, csv);
+    await fs.outputFile(resultFilePath, csv);
     console.log(csv);
   } catch (err) {
     console.error(err);
@@ -55,6 +65,7 @@ const saveTestResult = async testCases => {
 };
 
 module.exports = {
+  fetchScenarioFilePaths,
   fetchTestCases,
   saveTestResult,
 };
