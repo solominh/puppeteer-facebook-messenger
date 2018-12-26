@@ -56,7 +56,7 @@ const main = async () => {
 
   await handleTest.handleScenarios(page);
 
-  await teardown();
+  // await teardown();
 };
 
 main();

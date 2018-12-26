@@ -2,7 +2,7 @@ require('dotenv').config();
 const {
   openChatWindow,
   sendMessage,
-  getBotReplyTextMessages,
+  getBotMessages,
 } = require('./facebookMessengerParser');
 const settings = require('./settings.json');
 const moment = require('moment');
@@ -52,9 +52,9 @@ const handleTest = () => {
       throw error;
     }
 
-    let textMessages;
+    let messages;
     try {
-      textMessages = await getBotReplyTextMessages(page);
+      messages = await getBotMessages(page);
     } catch (error) {
       console.log(error);
       console.log('FAILED TO RECEIVE MESSAGE');
@@ -62,19 +62,30 @@ const handleTest = () => {
       throw error;
     }
 
-    let index = 0;
-    let isPassed = true;
-    const { outputArr } = test;
-    for (let reply of outputArr) {
-      if (reply !== textMessages[index]) {
-        isPassed = false;
-        test['error_message'] += `${index + 1}. Bot reply: ${
-          textMessages[index]
-        }\n`;
+    const {
+      textMessages,
+      quickReplyButtonsHandle,
+      menuButtonsHandle,
+      slideItemsHandle,
+    } = messages;
+
+    const compareTextMessages = (test, textMessages) => {
+      let index = 0;
+      let isPassed = true;
+      const { outputArr } = test;
+      for (let reply of outputArr) {
+        if (reply !== textMessages[index]) {
+          isPassed = false;
+          test['error_message'] += `${index + 1}. Bot reply: ${
+            textMessages[index]
+          }\n`;
+        }
+        index++;
       }
-      index++;
-    }
-    test['test_result'] = isPassed ? 'Passed' : 'Failed';
+      test['test_result'] = isPassed ? 'Passed' : 'Failed';
+    };
+
+    compareTextMessages(test, textMessages);
   };
 
   return {
