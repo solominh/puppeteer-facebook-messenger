@@ -8,6 +8,7 @@ const {
 } = require('./facebookMessengerParser');
 const settings = require('./settings.json');
 const handleTest = require('./handleTest');
+const { getProjectSettings } = require('./testManager');
 
 const main = async () => {
   let browser;
@@ -48,7 +49,8 @@ const main = async () => {
     throw error;
   }
 
-  await page.goto(settings.url);
+  const projectSettings = await getProjectSettings();
+  await page.goto(projectSettings.url);
   await openChatWindow(page);
   await page.waitFor(2000);
 

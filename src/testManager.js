@@ -19,11 +19,21 @@ const parseOutput = str => {
   return XRegExp.matchRecursive(str, '\\[', '\\]', 'g');
 };
 
-const fetchScenarioFilePaths = async () => {
-  const scenarioPath = path.join(__dirname, '../scenarios');
+const getProjectDir = () => {
+  const { projectName } = settings;
+  return path.join(__dirname, `../projects/${projectName}`);
+};
 
-  console.log(scenarioPath);
-  const { scenarioFileNames } = settings;
+const getProjectSettings = async () => {
+  const projectDir = getProjectDir();
+  return await fs.readJSON(path.join(projectDir, 'settings.json'));
+};
+
+const fetchScenarioFilePaths = async () => {
+  const projectDir = getProjectDir();
+  const scenarioPath = path.join(projectDir, 'scenarios');
+  const projectSettings = await getProjectSettings();
+  const { scenarioFileNames } = projectSettings;
   return scenarioFileNames
     .map(p => path.join(scenarioPath, p))
     .filter(p => fs.existsSync(p));
@@ -49,7 +59,7 @@ const fetchTestCases = async scenarioFilePath => {
 };
 
 const saveTestResult = async (resultDirname, scenarioFilePath, testCases) => {
-  const resultPath = path.join(__dirname, '../scenarios_results');
+  const resultPath = path.join(getProjectDir(), 'scenarios_results');
   const scenarioFileName = path.basename(scenarioFilePath);
   const resultFilePath = path.join(resultPath, resultDirname, scenarioFileName);
 
@@ -65,6 +75,8 @@ const saveTestResult = async (resultDirname, scenarioFilePath, testCases) => {
 };
 
 module.exports = {
+  getProjectDir,
+  getProjectSettings,
   fetchScenarioFilePaths,
   fetchTestCases,
   saveTestResult,

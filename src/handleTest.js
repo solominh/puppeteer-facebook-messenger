@@ -16,7 +16,7 @@ const {
 const handleTest = () => {
   const handleScenarios = async page => {
     const scenarioFilePaths = await fetchScenarioFilePaths();
-    const resultDirname = moment().format('MMM_D_YYYY_HH_mm_ss');
+    const resultDirname = moment().format('MMM_D_YYYY_hh_mm_ss_a');
     console.log(scenarioFilePaths);
     for (let scenarioFilePath of scenarioFilePaths) {
       try {

@@ -1,7 +1,0 @@
-order,input,output
-1,hello,"Hi Demo, I'm BoCobot from Bouygues Construction. What can I help you with ?"
-2,hello again,"Hi Demo, I'm BoCobot from Bouygues Construction. What can I help you with ?"
-3,hello again again,"[Sorry, BoCobot can't find the answer to your question. Please say 'Help' to see what I can help]
-[Is there anything else I can help?]
-[WHat is this?]"
-4,construction,Did you mean this ?
