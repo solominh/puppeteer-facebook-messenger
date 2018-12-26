@@ -7,8 +7,13 @@
   * EMAIL=myemail@gmail.com
   * PASS=mypassword
 * Add Facebook page to test and some settings: `src/settings.json`
-* Add test_cases.csv file to `__test__` folder: `__test__/test_cases.csv`
+* Add `test_cases_name.csv` file to `projects/${projectName}/scenarios`:
   * Fields: [`order`,`input`,`output`]
+  * Result at: `projects/${projectName}/scenarios_results`
+* Edit `projects/${projectName}/settings.json`:
+  * `url`
+  * `scenarioFileNames`
+  
 
   ![](./docs/images/test_cases_csv.png)  
   

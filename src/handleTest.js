@@ -64,7 +64,7 @@ const handleTest = () => {
       let isPassed = true;
       const { outputArr } = test;
       for (let reply of outputArr) {
-        if (reply !== textMessages[index]) {
+        if (!textMessages[index].toLowerCase().includes(reply.toLowerCase())) {
           isPassed = false;
           test['error_message'] += `${index + 1}. Bot reply: ${
             textMessages[index]
@@ -111,20 +111,46 @@ const handleTest = () => {
       slideItems,
     } = messages;
 
-    if (quickReplyButtons) {
+    let hasButton = false;
+    if (quickReplyButtons.length > 0) {
       for (let quickReplyButton of quickReplyButtons) {
         const buttonName = await page.evaluate(
           el => el.textContent,
           quickReplyButton
         );
-        if (buttonName.includes(actionInput)) {
+        if (buttonName.toLowerCase().includes(actionInput.toLowerCase())) {
           quickReplyButton.asElement().click();
+          hasButton = true;
           break;
         }
       }
     }
 
-    await compareBotMessageWithTestOutput(page, test);
+    if (menuButtons.length > 0) {
+      for (let menuButton of menuButtons) {
+        const buttonName = await page.evaluate(
+          el => el.textContent,
+          menuButton
+        );
+        if (buttonName.toLowerCase().includes(actionInput.toLowerCase())) {
+          menuButton.asElement().click();
+          hasButton = true;
+          break;
+        }
+      }
+    }
+
+    // TODO: compare slide items link
+    if (slideItems.length > 0) {
+      console.log('view button href');
+    }
+
+    if (hasButton) {
+      await compareBotMessageWithTestOutput(page, test);
+    } else {
+      test['error_message'] = `Button Input ${actionInput} not exist`;
+      test['test_result'] = 'Failed';
+    }
   };
 
   const handleTest = async (page, test) => {

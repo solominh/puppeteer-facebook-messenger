@@ -41,11 +41,12 @@ const fetchScenarioFilePaths = async () => {
 
 const fetchTestCases = async scenarioFilePath => {
   const csvFilePath = path.join(scenarioFilePath);
-  const jsonArray = await csv().fromFile(csvFilePath);
-  console.log(jsonArray);
+  let jsonArray = await csv().fromFile(csvFilePath);
 
   // Parse output
-  jsonArray.map(test => {
+  jsonArray = jsonArray
+  .filter(test => test.input)
+  .map(test => {
     let { input, output } = test;
     input = input.trim();
     output = output.trim();
@@ -53,7 +54,10 @@ const fetchTestCases = async scenarioFilePath => {
     test.outputArr = output.startsWith('[') ? parseOutput(output) : [output];
     test['error_message'] = '';
     test['test_result'] = '';
+    return test;
   });
+
+  console.log('jsonArray= ', jsonArray);
 
   return jsonArray;
 };

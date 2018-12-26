@@ -13,6 +13,7 @@ const selectors = {
     ".fbNubFlyoutOuter  .fbNubFlyoutInner  ._1i6a  ._4po5  ._4po8  ._4po9 ._419m ._2zgz div[role='button'] ._10-c",
   menuButtonsSelector: '._3cn0 ._4id8 ._3cnr div a',
   slideItemsSelector: '._2dyr ._2zgz',
+  slideItemViewButtonSelector: '._3cnp',
 };
 
 const openChatWindow = async page => {
