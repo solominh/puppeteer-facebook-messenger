@@ -1,4 +1,4 @@
 node_modules
 .env
 **/facebookCache.json
-projects
+**/scenarios_results

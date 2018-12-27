@@ -1,0 +1,6 @@
+order,input,output
+1,constructor,"[Is this the result you want to find ?]
+[Is there anything else I can help?]"
+2,[No],Thank you for chatting with BoCobot. Remember that BoCobot is always here to chat with
+,,
+,,

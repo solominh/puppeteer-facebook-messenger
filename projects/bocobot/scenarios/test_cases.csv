@@ -1,0 +1,12 @@
+order,input,output
+1,construction,Do you mean this ?
+2,[Is recruiting?],"• Every year, we recruit between 2,000 and 3,000 new employees in France, of whom around a half are experienced. Our international operations also hire people in equivalent proportions. Our recruitment needs cover the whole Bouygues Construction value chain, and they are particularly strong in site work, sales and the design office.
+• Even though the economic context has grown more uncertain, we are still recruiting so that we can continue to strengthen our expertise and prepare for the future."
+3,hello,I'm BoCobot from Bouygues Construction. What can I help you with ?
+4,[About Us],"[Feature is coming soon!!!]
+[Is there anything else I can help?]"
+5,[Yes],I'm BoCobot from Bouygues Construction. What can I help you with ?
+6,[Project Us],"Cool, let's continue to see more of our projects"
+,[Projects Us],"Cool, let's continue to see more of our projects"
+7,constructor,Is this the result you want to find ?
+8,[No],Thank you for chatting with BoCobot. Remember that BoCobot is always here to chat with 
